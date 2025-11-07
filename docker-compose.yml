@@ -6,7 +6,7 @@ services:
     container_name: postgres-db
     environment:
       #Fuerzas la ejecución de data.sql
-      SPRING_SQL_INIT_MODE: always
+      
       POSTGRES_DB: appdb
       POSTGRES_USER: appuser
       POSTGRES_PASSWORD: secret
@@ -26,6 +26,7 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/appdb
       SPRING_DATASOURCE_USERNAME: appuser
       SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_SQL_INIT_MODE: always
     ports:
       - "8080:8080"
     depends_on:
