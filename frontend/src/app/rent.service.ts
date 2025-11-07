@@ -10,12 +10,12 @@ import { environment } from './enviroment';
 export class ReservationService {
   private apiUrl: string;
 
-  /*constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
-    ? 'http://spring-backend:8080/api/field'
-    : 'http://localhost:8080/api/field';
-  }*/
-  constructor(
+    ? 'http://spring-backend:8080/api/rent'
+    : 'http://localhost:8080/api/rent';
+  }
+  /*constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -40,7 +40,7 @@ export class ReservationService {
     }
 
     this.apiUrl = baseUrl + '/rent'; // O '/field' si es el FieldService
-  }
+  }*/
 
   getAll(): Observable<Rent[]> {
     return this.http.get<Rent[]>(this.apiUrl);
