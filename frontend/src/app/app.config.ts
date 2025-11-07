@@ -1,19 +1,16 @@
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { ApplicationConfig, EnvironmentProviders, makeEnvironmentProviders, inject } from '@angular/core';
+import { ApplicationConfig, EnvironmentProviders, makeEnvironmentProviders, inject, PLATFORM_ID, InjectionToken, Injector } from '@angular/core';
 import { routes } from './app.routes';
 import { provideRouter } from '@angular/router';
-import { AuthModule, AuthConfig, provideAuth0 } from '@auth0/auth0-angular';
+import { AuthConfig, provideAuth0 } from '@auth0/auth0-angular';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { MatDialogModule } from '@angular/material/dialog'
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
-import { PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, DOCUMENT } from '@angular/common';
 
 
 /**
  * Función que genera la configuración de Auth0 de forma segura para SSR.
- * Esta función es CRÍTICA para encapsular el acceso a 'document.location.origin'
- * y para devolver el tipo correcto 'EnvironmentProviders'.
  */
 const provideAuth0SSRSafe = (config: AuthConfig): EnvironmentProviders => {
   const platformId = inject(PLATFORM_ID);
@@ -39,19 +36,17 @@ const provideAuth0SSRSafe = (config: AuthConfig): EnvironmentProviders => {
 
   } else {
     // Si estamos en el servidor (SSR), usamos una configuración mínima y fija.
-    // Esto evita que Auth0 intente acceder a 'location' durante la pre-renderización.
     safeConfig = {
-      domain: 'dev-1xf2p1cnt6igj7cz.us.auth0.com', // Usar el dominio real
-      clientId: '1hw2tQ6FfezNmO2KDtTGpU5EF5Howorv', // Usar el Client ID real
+      domain: config.domain, // Usar el dominio real de la configuración
+      clientId: config.clientId, // Usar el Client ID real de la configuración
       authorizationParams: {
         // Usamos un valor fijo y seguro para el servidor
-        redirect_uri: 'http://localhost:4200/home'
+        redirect_uri: 'http://localhost:4200/home' // Valor fijo para evitar fallos de compilación
       }
     };
   }
 
   // 3. Devolvemos el proveedor envuelto correctamente usando makeEnvironmentProviders
-  // Esto resuelve el error TS2741.
   return makeEnvironmentProviders([provideAuth0(safeConfig)]);
 };
 
@@ -70,7 +65,6 @@ export const appConfig: ApplicationConfig = {
             // Solo la ruta interna, el origen se añade en la función de proveedor.
             redirect_uri: '/home',
         },
-        // Omitimos cacheLocation y useRefreshTokens aquí, se añaden en la función de proveedor (isPlatformBrowser)
     }),
 
     MatDialogModule,

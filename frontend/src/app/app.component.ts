@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit { // Agregamos OnInit
   isAuthenticated = false;
   isAdmin = false;
   isCustomer = false;
@@ -23,6 +23,7 @@ export class AppComponent {
     private usersService: UsersService,
     private router: Router
   ) {}
+
   logout(): void {
     sessionStorage.removeItem('adminRedirected');
     this.auth.logout({ logoutParams: { returnTo: window.location.origin } });
@@ -34,6 +35,16 @@ export class AppComponent {
 
       if (auth) {
         this.auth.user$.subscribe((user) => {
+
+          // 🛑 SOLUCIÓN AL ERROR TS2554: Llama al servicio AQUI
+          if (user && user.email) {
+            this.usersService.getUserByEmail(user.email).subscribe({ // 👈 Le pasamos el email
+              next: () => console.log('Usuario sincronizado correctamente'),
+              error: (err) => console.error('Error al sincronizar usuario:', err),
+            });
+          }
+          // ----------------------------------------------------
+
           console.log('Usuario: ', user?.email);
           console.log('Nombre: ', user?.name);
           console.log('Sub (ID Auth0): ', user?.sub);
@@ -70,10 +81,10 @@ export class AppComponent {
       }
     });
 
-    // Sincronizar usuario con el backend al iniciar la aplicación
-    this.usersService.sincronizarUsuario().subscribe({
-      next: () => console.log('Usuario sincronizado correctamente'),
-      error: (err) => console.error('Error al sincronizar usuario:', err),
-    });
+    // ❌ LÍNEAS ELIMINADAS (estaban fuera del contexto de usuario)
+    // this.usersService.getUserByEmail().subscribe({
+    //   next: () => console.log('Usuario sincronizado correctamente'),
+    //   error: (err) => console.error('Error al sincronizar usuario:', err),
+    // });
   }
 }

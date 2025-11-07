@@ -9,8 +9,22 @@ import { environment } from './enviroment';
 })
 export class ReservationService {
   private apiUrl: string;
+  private API_ROUTE = '/api/rent';
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+
+    if (isPlatformServer(this.platformId)) {
+        // Opción 1: Cuando corre en el servidor (SSR/Docker), usa el nombre del servicio Docker
+        // Nota: Asumo que el endpoint completo es '/api/reservation'
+        this.apiUrl = `http://backend:8080${this.API_ROUTE}`;
+    } else {
+        // Opción 2: Cuando corre en el navegador (Browser/Client), usa la ruta relativa.
+        // Esto permite que el proxy (si lo tienes) o el Nginx/Ingress redireccione la llamada
+        // al backend, sin depender de 'localhost'.
+        this.apiUrl = this.API_ROUTE;
+    }
+  }
+  /*constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
     ? 'http://spring-backend:8080/api/rent'
     : 'http://localhost:8080/api/rent';

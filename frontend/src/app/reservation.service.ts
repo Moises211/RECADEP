@@ -11,7 +11,19 @@ import { CreateReservationDto } from './models/create-reservation.dto';
 })
 export class ReservationService {
   private apiUrl: string;
+  private API_ROUTE = '/api/reservation';
+
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+
+    if (isPlatformServer(this.platformId)) {
+
+        this.apiUrl = `http://backend:8080${this.API_ROUTE}`;
+    } else {
+
+        this.apiUrl = this.API_ROUTE;
+    }
+  }
+  /*constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
     ? 'http://spring-backend:8080/api/reservation'
     : 'http://localhost:8080/api/reservation';

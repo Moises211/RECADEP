@@ -35,21 +35,35 @@ services:
       - db
     networks:
       - monorepo-net
-
+  curler: # <-- ¡DEFINICIÓN NECESARIA!
+    # Imagen ligera que contiene la herramienta curl
+    image: curlimages/curl
+    # Esta herramienta no necesita correr siempre, solo para diagnóstico
+    command: ["sleep", "infinity"] 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: angular-frontend
     environment:
-      NODE_OPTIONS: "--max-old-space-size=4096"
+      NODE_OPTIONS: "--max-old-space-size=2048"
       API_BASE_URL: http://spring-backend:8080
+    deploy:
+      resources:
+        limits:
+          memory: 3072m
     ports:
       - "4200:4200"
     depends_on:
       - backend
     networks:
       - monorepo-net
+
+#curler:
+    # Imagen ligera que contiene la herramienta curl
+ #   image: curlimages/curl
+    # Esta herramienta no necesita correr siempre, solo para diagnóstico
+  #  command: ["sleep", "infinity"]
 
 volumes:
   pgdata:

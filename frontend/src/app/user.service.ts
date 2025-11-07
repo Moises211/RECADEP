@@ -15,8 +15,20 @@ export interface User {
 export class UserService {
 
   private apiUrl: string;
+  private API_ROUTE = '/api/users';
 
-  /*constructor(
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+
+    if (isPlatformServer(this.platformId)) {
+
+        this.apiUrl = `http://backend:8080${this.API_ROUTE}`;
+    } else {
+
+        this.apiUrl = this.API_ROUTE;
+    }
+  }
+/*
+  constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -25,8 +37,8 @@ export class UserService {
       : 'http://localhost:8080/api/users';
       console.log('Is platform server?', isPlatformServer(this.platformId));
       console.log('Resolved API URL:', this.apiUrl);
-  }*/
-  constructor(
+  }
+  /*constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -42,7 +54,7 @@ export class UserService {
         ? environment.springHostBridge + '/users'
         : environment.springLocal + '/users';
     }
-  }
+  }*/
     getUsers(): Observable < User[] > {
       return this.http.get<User[]>(this.apiUrl);
     }
