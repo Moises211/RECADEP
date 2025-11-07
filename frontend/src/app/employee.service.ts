@@ -10,12 +10,12 @@ import { environment } from './enviroment';
 export class EmployeerService {
   private apiUrl: string;
 
-  /*constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
     ? 'http://spring-backend:8080/api/employee'
     : 'http://localhost:8080/api/employee';
-  }*/
-  constructor(
+  }
+  /*constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -40,7 +40,7 @@ export class EmployeerService {
     }
 
     this.apiUrl = baseUrl + '/employee'; // O '/field' si es el FieldService
-  }
+  }*/
 
   getAll(): Observable<Employeer[]> {
     return this.http.get<Employeer[]>(this.apiUrl);
