@@ -27,7 +27,8 @@ services:
       SPRING_DATASOURCE_USERNAME: appuser
       SPRING_DATASOURCE_PASSWORD: secret
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_SQL_INIT_MODE: always      
+      SPRING_SQL_INIT_MODE: never
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"              
     ports:
       - "8080:8080"
     depends_on:
@@ -41,6 +42,7 @@ services:
       dockerfile: Dockerfile
     container_name: angular-frontend
     environment:
+      NODE_OPTIONS: "--max-old-space-size=4096"
       API_BASE_URL: http://spring-backend:8080
     ports:
       - "4200:4200"
