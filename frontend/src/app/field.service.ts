@@ -9,14 +9,6 @@ import { environment } from './enviroment';
 })
 export class FieldService {
   private apiUrl: string;
-  private API_ROUTE = '/api/field';
-
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
-
-    if (isPlatformServer(this.platformId)) {
-
-        this.apiUrl = `http://backend:8080${this.API_ROUTE}`;
-    } else {
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
