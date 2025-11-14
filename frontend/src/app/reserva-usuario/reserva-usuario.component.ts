@@ -50,7 +50,7 @@ export class ReservaUsuarioComponent implements OnInit {
         const email = user?.email;
         if (email) {
           this.customerService
-            .getCustomerByEmail(email)
+            .getCustomerByEmail(email) 
             .subscribe((customer) => {
               this.usuarioId = customer.customerId;
             });
