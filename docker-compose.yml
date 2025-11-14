@@ -5,6 +5,8 @@ services:
     image: postgres:15
     container_name: postgres-db
     environment:
+      #Fuerzas la ejecución de data.sql
+      
       POSTGRES_DB: appdb
       POSTGRES_USER: appuser
       POSTGRES_PASSWORD: secret
@@ -24,26 +26,44 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/appdb
       SPRING_DATASOURCE_USERNAME: appuser
       SPRING_DATASOURCE_PASSWORD: secret
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SPRING_SQL_INIT_MODE: never
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"              
     ports:
       - "8080:8080"
     depends_on:
       - db
     networks:
       - monorepo-net
-
+  curler: # <-- ¡DEFINICIÓN NECESARIA!
+    # Imagen ligera que contiene la herramienta curl
+    image: curlimages/curl
+    # Esta herramienta no necesita correr siempre, solo para diagnóstico
+    command: ["sleep", "infinity"] 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: angular-frontend
     environment:
+      NODE_OPTIONS: "--max-old-space-size=2048"
       API_BASE_URL: http://spring-backend:8080
+    deploy:
+      resources:
+        limits:
+          memory: 3072m
     ports:
       - "4200:4200"
     depends_on:
       - backend
     networks:
       - monorepo-net
+
+#curler:
+    # Imagen ligera que contiene la herramienta curl
+ #   image: curlimages/curl
+    # Esta herramienta no necesita correr siempre, solo para diagnóstico
+  #  command: ["sleep", "infinity"]
 
 volumes:
   pgdata:

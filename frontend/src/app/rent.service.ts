@@ -9,6 +9,9 @@ import { environment } from './enviroment';
 })
 export class ReservationService {
   private apiUrl: string;
+  private API_ROUTE = '/api/rent';
+
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
@@ -31,6 +34,9 @@ export class ReservationService {
         ? environment.springHostBridge + '/rent'
         : environment.springLocal + '/rent';
     }
+  }*/
+
+    this.apiUrl = baseUrl + '/rent'; // O '/field' si es el FieldService
   }*/
 
   getAll(): Observable<Rent[]> {

@@ -1,5 +1,5 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { isPlatformServer } from '@angular/common';
+import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Reservation } from './models/reservation.model';
@@ -11,6 +11,7 @@ import { CreateReservationDto } from './models/create-reservation.dto';
 })
 export class ReservationService {
   private apiUrl: string;
+  private API_ROUTE = '/api/reservation';
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
@@ -21,17 +22,24 @@ export class ReservationService {
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
+    let baseUrl: string;
+
+    // 1. Si estamos en el Servidor (SSR/Node.js)
     if (isPlatformServer(this.platformId)) {
-      // Angular ejecutándose en SSR (Node.js)
-      this.apiUrl = environment.springDocker + '/reservation';
-    } else {
-      // Angular ejecutándose en navegador
-      // Detectar si está en Docker usando hostname o heurística
+      baseUrl = environment.springDocker;
+
+      // 2. Si NO estamos en el servidor, usamos una verificación SEGURA.
+      // Solo accedemos a window si typeof window es 'object' (es decir, existe)
+    } else if (typeof window !== 'undefined') {
+      // Si estamos aquí, sabemos que estamos en el navegador.
       const isDocker = window.location.hostname !== 'localhost';
 
-      this.apiUrl = isDocker
-        ? environment.springHostBridge + '/reservation'
-        : environment.springLocal + '/reservation';
+      baseUrl = isDocker
+        ? environment.springHostBridge
+        : environment.springLocal;
+    } else {
+      // Si no es SSR ni el navegador (ej. pruebas unitarias), usamos local
+      baseUrl = environment.springLocal;
     }
   }*/
 

@@ -15,6 +15,7 @@ export interface User {
 export class UserService {
 
   private apiUrl: string;
+  private API_ROUTE = '/api/users';
 
   constructor(
     private http: HttpClient,
