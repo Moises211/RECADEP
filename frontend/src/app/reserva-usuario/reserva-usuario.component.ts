@@ -12,6 +12,8 @@ import { firstValueFrom } from 'rxjs';
 import { FieldService } from '../field.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ReservaConfirmDialogComponent } from '../dialogs/reserva-confirm-dialog/reserva-confirm-dialog.component';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-reserva-usuario',
@@ -38,18 +40,24 @@ export class ReservaUsuarioComponent implements OnInit {
     private usersService: UsersService,
     private customerService: CustomerService,
     private fieldService: FieldService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   ngOnInit(): void {
-    this.auth.user$.subscribe((user) => {
-      const email = user?.email;
-      if (email) {
-        this.customerService.getCustomerByEmail(email).subscribe((customer) => {
-          this.usuarioId = customer.customerId;
-        });
-      }
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      this.auth.user$.subscribe((user) => {
+        const email = user?.email;
+        if (email) {
+          this.customerService
+            .getCustomerByEmail(email)
+            .subscribe((customer) => {
+              this.usuarioId = customer.customerId;
+            });
+        }
+      });
+    }
+
     this.route.queryParams.subscribe((params) => {
       this.initialValues = {
         canchaId: params['canchaId'],

@@ -5,6 +5,8 @@ import { AuthService } from '@auth0/auth0-angular';
 import { MatDialog } from '@angular/material/dialog';
 import { ReservaPreviewDialogComponent } from '../dialogs/reserva-preview-dialog/reserva-preview-dialog.component';
 import { ReservaValidacionFormComponent } from '../shared/reserva-validacion-form/reserva-validacion-form.component';
+import { isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 
 @Component({
   selector: 'app-home-page',
@@ -27,7 +29,8 @@ export class HomePageComponent {
   constructor(
     private router: Router,
     private auth: AuthService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   onDisponibilidad(disponible: boolean | null) {
@@ -43,18 +46,20 @@ export class HomePageComponent {
     this.datosReserva = datos;
   }
   ngOnInit(): void {
-    this.auth.user$.subscribe((user) => {
-      const roles = user?.['https://your-app.com/roles'] || [];
-      this.isAdmin = roles.includes('admin');
-    });
+    if (isPlatformBrowser(this.platformId)) {
+      this.auth.user$.subscribe((user) => {
+        const roles = user?.['https://your-app.com/roles'] || [];
+        this.isAdmin = roles.includes('admin');
+      });
 
-    this.auth.isAuthenticated$.subscribe((auth) => {
-      this.isAuthenticated = auth;
-    });
+      this.auth.isAuthenticated$.subscribe((auth) => {
+        this.isAuthenticated = auth;
+      });
+    }
   }
 
   iniciarReserva(): void {
-    if (!this.datosReserva) return;
+    if (!this.datosReserva || !isPlatformBrowser(this.platformId)) return;
 
     const { canchaId, reservationDate, startTime, endTime } = this.datosReserva;
 

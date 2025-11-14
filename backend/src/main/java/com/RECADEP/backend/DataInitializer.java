@@ -36,10 +36,10 @@ public class DataInitializer {
                 Field[] fiel = new Field[6];
                 fiel[0] = new Field();fiel[0].setArea(10.00); fiel[0].setFieldType("tenis");
                 fiel[1] = new Field();fiel[1].setArea(12.00); fiel[1].setFieldType("tenis");
-                fiel[2] = new Field();fiel[2].setArea(14.00); fiel[1].setFieldType("futbol");
-                fiel[3] = new Field();fiel[3].setArea(15.00); fiel[1].setFieldType("futbol");
-                fiel[4] = new Field();fiel[4].setArea(16.00); fiel[1].setFieldType("padel");
-                fiel[5] = new Field();fiel[5].setArea(20.00); fiel[1].setFieldType("padel");
+                fiel[2] = new Field();fiel[2].setArea(14.00); fiel[2].setFieldType("futbol");
+                fiel[3] = new Field();fiel[3].setArea(15.00); fiel[3].setFieldType("futbol");
+                fiel[4] = new Field();fiel[4].setArea(16.00); fiel[4].setFieldType("padel");
+                fiel[5] = new Field();fiel[5].setArea(20.00); fiel[5].setFieldType("padel");
                 for (Field field : fiel) {
                     fieldRepository.save(field);
                 }

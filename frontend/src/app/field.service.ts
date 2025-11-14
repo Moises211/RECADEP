@@ -1,5 +1,5 @@
 import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser, isPlatformServer } from '@angular/common';
+import { isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Field } from './models/field.model';
@@ -18,10 +18,7 @@ export class FieldService {
         this.apiUrl = `http://backend:8080${this.API_ROUTE}`;
     } else {
 
-        this.apiUrl = this.API_ROUTE;
-    }
-  }
-  /*constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
     ? 'http://spring-backend:8080/api/field'
     : 'http://localhost:8080/api/field';
@@ -30,27 +27,18 @@ export class FieldService {
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    let baseUrl: string;
-
-    // 1. Si estamos en el Servidor (SSR/Node.js)
     if (isPlatformServer(this.platformId)) {
-      baseUrl = environment.springDocker;
-
-      // 2. Si NO estamos en el servidor, usamos una verificación SEGURA.
-      // Solo accedemos a window si typeof window es 'object' (es decir, existe)
-    } else if (typeof window !== 'undefined') {
-      // Si estamos aquí, sabemos que estamos en el navegador.
+      // Angular ejecutándose en SSR (Node.js)
+      this.apiUrl = environment.springDocker + '/field';
+    } else {
+      // Angular ejecutándose en navegador
+      // Detectar si está en Docker usando hostname o heurística
       const isDocker = window.location.hostname !== 'localhost';
 
-      baseUrl = isDocker
-        ? environment.springHostBridge
-        : environment.springLocal;
-    } else {
-      // Si no es SSR ni el navegador (ej. pruebas unitarias), usamos local
-      baseUrl = environment.springLocal;
+      this.apiUrl = isDocker
+        ? environment.springHostBridge + '/field'
+        : environment.springLocal + '/field';
     }
-
-    this.apiUrl = baseUrl + '/field'; // O '/field' si es el FieldService
   }*/
 
   getAll(): Observable<Field[]> {
