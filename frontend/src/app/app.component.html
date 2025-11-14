@@ -1,30 +1,34 @@
 <!--<app-user-list></app-user-list>
 <router-outlet></router-outlet>-->
-<header class="main-header">
-  <h1>RECADEP</h1>
-  <nav>
-    <!--div class="spacer">
+<div class="page-container">
+  <header class="main-header">
+    <h1>RECADEP</h1>
+    <nav>
+      <!--div class="spacer">
       <button *ngIf="!(auth.isAuthenticated$ | async)" (click)="auth.loginWithRedirect()">Iniciar sesión</button>
       <button *ngIf="auth.isAuthenticated$ | async" (click)="auth.logout()">Cerrar sesión</button>
     </!--div-->
-    <ng-container *ngIf="auth.isLoading$ | async; else ready">
-      <p>Cargando sesión...</p>
-    </ng-container>
+      <ng-container *ngIf="auth.isLoading$ | async; else ready">
+        <p>Cargando sesión...</p>
+      </ng-container>
 
-    <ng-template #ready>
-      <button *ngIf="!(auth.isAuthenticated$ | async)" (click)="auth.loginWithRedirect()">Iniciar sesión</button>
-      <button *ngIf="auth.isAuthenticated$ | async" (click)="logout()">Cerrar sesión</button>
-    </ng-template>
+      <ng-template #ready>
+        <button *ngIf="!(auth.isAuthenticated$ | async)" (click)="auth.loginWithRedirect()">Iniciar sesión</button>
+        <button *ngIf="auth.isAuthenticated$ | async" (click)="logout()">Cerrar sesión</button>
+      </ng-template>
 
-    <a routerLink="/home" routerLinkActive="active">Inicio</a>
-    <a routerLink="/collision" routerLinkActive="active">Disponibilidad</a>
-  </nav>
-</header>
+      <!--a routerLink="/home" routerLinkActive="active">Inicio</!--a-->
+      <!--a routerLink="/collision" routerLinkActive="active">Disponibilidad</!--a-->
+      <a *ngIf="isCustomer" routerLink="/reserva-usuario" routerLinkActive="active">Modulo Usuario</a>
+      <a *ngIf="isAdmin" routerLink="/admin-reservas" routerLinkActive="active">Admin reservas</a>
+    </nav>
+  </header>
 
-<main>
-  <router-outlet></router-outlet>
-</main>
+  <main class="main-content">
+    <router-outlet></router-outlet>
+  </main>
 
-<footer class="main-footer">
-  <p>© 2025 RECADEP</p>
-</footer>
+  <footer class="main-footer">
+    <p>© 2025 RECADEP</p>
+  </footer>
+</div>

@@ -9,4 +9,6 @@ export interface Users {
   documentNumber: number;
   employee: Employeer;
   customer: Customer;
+  email: string;
+  telephone: string;
 }

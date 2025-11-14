@@ -1,4 +1,215 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --color-verde-campo: #6B8E23;
+  --color-verde-gris: #4F6F50;
+  --color-gris-claro: #E0E0E0;
+  --color-gris-medio: #A9A9A9;
+  --color-rojo-tenue: #C44D58;
+  --color-blanco: #FFFFFF;
+}
+/* Quick search section */
+.quick-search {
+  background-color: var(--color-blanco);
+  padding: 2rem;
+  margin: 2rem auto;
+  margin-top: 2rem;
+  max-width: 600px;
+  border: 1px solid var(--color-gris-medio);
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+.quick-search h2 {
+  color: var(--color-verde-gris);
+  margin-bottom: 1.5rem;
+}
+
+form label {
+  display: block;
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #34495e;
+}
+
+form input,
+form select {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+form button {
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  background: #27ae60;
+  color: white;
+  border: none;
+  width: 100%;
+  font-size: 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+form button:hover {
+  background: #219150;
+}
+/* Hero section */
+.hero {
+  background-color: var(--color-gris-claro);
+  padding: 2rem;
+  text-align: center;
+}
+
+.hero h1 {
+  color: var(--color-verde-gris);
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.hero img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.main-header {
+  background-color: var(--color-verde-gris);
+  color: var(--color-blanco);
+  padding: 1rem;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav a {
+  color: var(--color-blanco);
+  margin: 0 1rem;
+  text-decoration: none;
+}
+
+nav a.active {
+  border-bottom: 2px solid var(--color-verde-campo);
+}
+
+.main-footer {
+  background-color: var(--color-verde-gris);
+  color: var(--color-gris-claro);
+  border-top: 1px solid var(--color-gris-medio);
+  padding: 1rem;
+  text-align: center;
+}
+/* Disponibilidad feedback */
+.disponible {
+  color: var(--color-verde-campo);
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.no-disponible {
+  color: var(--color-rojo-tenue);
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.btn-reservar {
+  background-color: var(--color-verde-campo);
+  color: var(--color-blanco);
+  border: none;
+  padding: 0.5rem 1.25rem;
+  margin-top: 1rem;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-reservar:hover {
+  background-color: #5a7c1c;
+}
+
+.btn-cancelar {
+  background-color: var(--color-rojo-tenue);
+  color: var(--color-blanco);
+  border: none;
+}
+
+.btn-cancelar:hover {
+  background-color: #a63c47;
+}
+
+.btn-reservar {
+  background-color: var(--color-verde-campo);
+  color: var(--color-blanco);
+  border: none;
+}
+
+.btn-reservar:hover {
+  background-color: #5a7c1c;
+}
+
+.btn-cancelar {
+  background-color: var(--color-rojo-tenue);
+  color: var(--color-blanco);
+  border: none;
+}
+
+.btn-cancelar:hover {
+  background-color: #a63c47;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background-color: var(--color-verde-campo);
+  color: var(--color-blanco);
+  padding: 0.75rem;
+}
+
+td {
+  padding: 0.5rem;
+  border: 1px solid var(--color-gris-medio);
+}
+
+tr:nth-child(even) {
+  background-color: var(--color-gris-claro);
+}
+
+.reservas-section {
+  padding: 2rem 0;
+  background-color: var(--color-gris-claro);
+}
+
+.reservas-wrapper {
+  background-color: var(--color-blanco);
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  border: 1px solid var(--color-gris-medio);
+}
+
+.reservas-wrapper h2 {
+  color: var(--color-verde-gris);
+  font-weight: bold;
+}
+
+.hero-carousel {
+  margin-bottom: 2rem;
+}
+
+.carousel-caption h1 {
+  background-color: rgba(79, 111, 80, 0.7); /* var(--color-verde-gris) con transparencia */
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 1.8rem;
+}
+
+.hero-carousel .carousel-item img {
+  height: 40vh; /* proporsion al alto de la ventana */
+  object-fit: cover;
+}

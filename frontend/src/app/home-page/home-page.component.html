@@ -1,7 +1,37 @@
-<section class="hero">
-  <h1>RECADEP, reserva tu Cancha Rápido y Fácil.</h1>
-  <img src="assets/cancha.jpg" alt="Cancha deportiva" />
+<section class="hero-carousel">
+  <div id="recadepCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="https://media.todojujuy.com/p/3885fc0b1e97d53eff4a8f403c027426/adjuntos/227/imagenes/001/357/0001357908/1200x675/smart/cancha-futbol-5jpg.jpg" class="d-block w-100" alt="Cancha deportiva 1" />
+        <div class="carousel-caption d-none d-md-block">
+          <h1>RECADEP, reserva tu Cancha Rápido y Fácil.</h1>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://arturf.com/wp-content/uploads/2023/05/Arturf-Padel-Court-2-768x576.jpg" class="d-block w-100" alt="Cancha deportiva 2" />
+        <div class="carousel-caption d-none d-md-block">
+          <h1>Encuentra disponibilidad en segundos</h1>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="https://civideportes.com.co/wp-content/uploads/2019/10/WhatsApp-Image-2019-08-29-at-9.06.14-AM.jpeg" class="d-block w-100" alt="Cancha deportiva 3" />
+        <div class="carousel-caption d-none d-md-block">
+          <h1>Administra tus reservas con facilidad</h1>
+        </div>
+      </div>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#recadepCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#recadepCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Siguiente</span>
+    </button>
+  </div>
 </section>
+
 
 <section class="quick-search">
   <h2>Consulta Rápida</h2>
@@ -15,7 +45,7 @@
   <div *ngIf="disponibilidad === false" class="no-disponible">⚠️ Ya existe una reserva en ese horario</div>
 
   <button
-    *ngIf="disponibilidad === true"
+    *ngIf="disponibilidad === true && !isAdmin"
     (click)="iniciarReserva()"
     class="btn btn-primary"
   >

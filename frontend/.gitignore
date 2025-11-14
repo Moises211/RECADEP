@@ -2,7 +2,7 @@
 /dist/
 /browser/
 /server/
-/angular.json
+
 
 # Node modules
 /node_modules/

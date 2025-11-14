@@ -1,0 +1,40 @@
+<section class="reservas-section">
+  <div class="container">
+    <div class="reservas-wrapper">
+      <h2 class="mb-4"> Lista de Reservas</h2>
+
+      <div class="table-responsive shadow-sm rounded border">
+        <table class="table table-hover table-striped align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>Código</th>
+              <th>Cancha</th>
+              <th>Tipo</th>
+              <th>Fecha</th>
+              <th>Hora Inicio</th>
+              <th>Hora Fin</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reserva of reservas">
+              <td><span class="badge bg-primary">{{ reserva.reservationId }}</span></td>
+              <td>{{ "# " + reserva.field.fieldId}}</td>
+              <td>{{ reserva.field.fieldType}}</td>
+              <td>{{ reserva.reservationDate }}</td>
+              <td>{{ reserva.startTime }}</td>
+              <td>{{ reserva.endTime }}</td>
+              <td>{{ reserva.customer.users.username +" "+ reserva.customer.users.lastname}}</td>
+              <td>{{ reserva.customer.users.email }}</td>
+              <td>{{ reserva.customer.users.telephone }}</td>
+              <td>{{ reserva.status }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>

@@ -2,12 +2,15 @@
 FROM node:20.9.0-alpine AS builder
 
 WORKDIR /app
-COPY . .
+COPY package.json package-lock.json ./
+COPY angular.json ./
+COPY tsconfig*.json ./
 
 # Instala Angular CLI y dependencias
-RUN npm install -g @angular/cli@17
+#RUN npm install -g @angular/cli@17
 RUN npm install
 
+COPY . .
 # Compila cliente y servidor SSR
 RUN npm run build:ssr
 
