@@ -9,9 +9,6 @@ import { environment } from './enviroment';
 })
 export class CustomerService {
   private apiUrl: string;
-  private API_ROUTE = '/api/customer';
-
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
