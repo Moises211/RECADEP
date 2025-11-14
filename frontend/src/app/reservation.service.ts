@@ -12,7 +12,12 @@ import { CreateReservationDto } from './models/create-reservation.dto';
 export class ReservationService {
   private apiUrl: string;
 
-  constructor(
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+    this.apiUrl = isPlatformServer(this.platformId)
+    ? 'http://spring-backend:8080/api/reservation'
+    : 'http://localhost:8080/api/reservation';
+  }
+  /*constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {
@@ -28,7 +33,7 @@ export class ReservationService {
         ? environment.springHostBridge + '/reservation'
         : environment.springLocal + '/reservation';
     }
-  }
+  }*/
 
   getAll(): Observable<Reservation[]> {
     return this.http.get<Reservation[]>(this.apiUrl);

@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
 import { UsersService } from './users.service';
 import { Router } from '@angular/router';
@@ -16,64 +16,58 @@ export class AppComponent {
   isAuthenticated = false;
   isAdmin = false;
   isCustomer = false;
-  redireccionado = false;
 
   constructor(
     public auth: AuthService,
     private usersService: UsersService,
-    private router: Router
+    private router: Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
+
   logout(): void {
-    sessionStorage.removeItem('adminRedirected');
-    this.auth.logout({ logoutParams: { returnTo: window.location.origin } });
+    if (isPlatformBrowser(this.platformId)) {
+      this.auth.logout({ logoutParams: { returnTo: window.location.origin } });
+    }
   }
 
   ngOnInit(): void {
-    this.auth.isAuthenticated$.subscribe((auth) => {
-      this.isAuthenticated = auth;
+    if (isPlatformBrowser(this.platformId)) {
+      this.auth.isAuthenticated$.subscribe((auth) => {
+        this.isAuthenticated = auth;
 
-      if (auth) {
-        this.auth.user$.subscribe((user) => {
-          console.log('Usuario: ', user?.email);
-          console.log('Nombre: ', user?.name);
-          console.log('Sub (ID Auth0): ', user?.sub);
+        if (auth) {
+          this.auth.user$.subscribe((user) => {
+            console.log('Usuario: ', user?.email);
+            console.log('Roles:', user?.['https://your-app.com/roles']);
 
-          const roles = user?.['https://your-app.com/roles'] || [];
-          console.log('Roles:', roles);
+            this.isAdmin = user?.['https://your-app.com/roles']?.includes('admin');
+            this.isCustomer = user?.['https://your-app.com/roles']?.includes('customer');
 
-          this.isAdmin = roles.includes('admin');
-          this.isCustomer = roles.includes('customer');
-
-          this.auth.appState$.subscribe((state) => {
-            const target = state?.target;
-            const canchaId = state?.['canchaId'];
-            const fechaInicio = state?.['fechaInicio'];
-            const fechaFin = state?.['fechaFin'];
-
-            // Redirigir admin solo si no viene de una reserva
-            if (this.isAdmin && !sessionStorage.getItem('adminRedirected')) {
-              sessionStorage.setItem('adminRedirected', 'true');
-              this.router.navigate(['/admin-reservas']);
-              if (!target || target === '/home') {
-                return;
+            this.auth.appState$.subscribe((state) => {
+              if (this.isAdmin && !sessionStorage.getItem('adminRedirected')) {
+                sessionStorage.setItem('adminRedirected', 'true');
+                this.router.navigate(['/admin-reservas']);
               }
-            }
 
-            // Redirigir customer si viene de reserva
-            if (this.isCustomer && target === '/reserva-usuario') {
-              this.router.navigate(['/reserva-usuario'], {
-                queryParams: { canchaId, fechaInicio, fechaFin },
-              });
-            }
+              if (this.isCustomer && state?.target === '/reserva-usuario') {
+                this.router.navigate(['/reserva-usuario'], {
+                  queryParams: {
+                    canchaId: state?.['canchaId'],
+                    fechaInicio: state?.['fechaInicio'],
+                    fechaFin: state?.['fechaFin'],
+                  },
+                });
+              }
+            });
           });
-        });
-      }
-    });
+        }
+      });
 
-    // Sincronizar usuario con el backend al iniciar la aplicación
-    this.usersService.sincronizarUsuario().subscribe({
-      next: () => console.log('Usuario sincronizado correctamente'),
-      error: (err) => console.error('Error al sincronizar usuario:', err),
-    });
+      // Sincronizar usuario solo en navegador
+      this.usersService.sincronizarUsuario().subscribe({
+        next: () => console.log('Usuario sincronizado correctamente'),
+        error: (err) => console.error('Error al sincronizar usuario:', err),
+      });
+    }
   }
 }
