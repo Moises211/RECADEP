@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit { // Agregamos OnInit
+export class AppComponent {
   isAuthenticated = false;
   isAdmin = false;
   isCustomer = false;
