@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ReservationService } from '../reservation.service';
+import { ReservationService } from '../../services/reservation.service';
 
 @Component({
   selector: 'app-availability-check',

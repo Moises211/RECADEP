@@ -2,21 +2,18 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Rent } from './models/rent.model';
-import { environment } from './enviroment';
+import { Employeer } from '../models/employee.model';
+import { environment } from '../enviroment';
 @Injectable({
   providedIn: 'root',
 })
-export class ReservationService {
+export class EmployeerService {
   private apiUrl: string;
-  private API_ROUTE = '/api/rent';
-
-  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
 
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
-    ? 'http://spring-backend:8080/api/rent'
-    : 'http://localhost:8080/api/rent';
+    ? 'http://spring-backend:8080/api/employee'
+    : 'http://localhost:8080/api/employee';
   }
   /*constructor(
     private http: HttpClient,
@@ -24,35 +21,32 @@ export class ReservationService {
   ) {
     if (isPlatformServer(this.platformId)) {
       // Angular ejecutándose en SSR (Node.js)
-      this.apiUrl = environment.springDocker + '/rent';
+      this.apiUrl = environment.springDocker + '/employee';
     } else {
       // Angular ejecutándose en navegador
       // Detectar si está en Docker usando hostname o heurística
       const isDocker = window.location.hostname !== 'localhost';
 
       this.apiUrl = isDocker
-        ? environment.springHostBridge + '/rent'
-        : environment.springLocal + '/rent';
+        ? environment.springHostBridge + '/employee'
+        : environment.springLocal + '/employee';
     }
   }*/
 
-    this.apiUrl = baseUrl + '/rent'; // O '/field' si es el FieldService
-  }*/
-
-  getAll(): Observable<Rent[]> {
-    return this.http.get<Rent[]>(this.apiUrl);
+  getAll(): Observable<Employeer[]> {
+    return this.http.get<Employeer[]>(this.apiUrl);
   }
 
-  getById(id: number): Observable<Rent> {
-    return this.http.get<Rent>(`${this.apiUrl}/${id}`);
+  getById(id: number): Observable<Employeer> {
+    return this.http.get<Employeer>(`${this.apiUrl}/${id}`);
   }
 
-  create(rent: Rent): Observable<Rent> {
-    return this.http.post<Rent>(this.apiUrl, rent);
+  create(employee: Employeer): Observable<Employeer> {
+    return this.http.post<Employeer>(this.apiUrl, employee);
   }
 
-  update(id: number, rent: Rent): Observable<Rent> {
-    return this.http.put<Rent>(`${this.apiUrl}/${id}`, rent);
+  update(id: number, employee: Employeer): Observable<Employeer> {
+    return this.http.put<Employeer>(`${this.apiUrl}/${id}`, employee);
   }
 
   delete(id: number): Observable<void> {

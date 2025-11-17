@@ -2,8 +2,8 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Users } from './models/users.model';
-import { environment } from './enviroment';
+import { Users } from '../models/users.model';
+import { environment } from '../enviroment';
 @Injectable({
   providedIn: 'root',
 })

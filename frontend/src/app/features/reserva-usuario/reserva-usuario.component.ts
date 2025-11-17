@@ -1,17 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { ReservaValidacionFormComponent } from '../shared/reserva-validacion-form/reserva-validacion-form.component';
-import { ReservationService } from '../reservation.service';
+import { ReservaValidacionFormComponent } from '../../shared/reserva-validacion-form/reserva-validacion-form.component';
+import { ReservationService } from '../../services/reservation.service';
 import { AuthService } from '@auth0/auth0-angular';
 //import { CreateReservationDto } from '../models/create-reservation.dto';
-import { UsersService } from '../users.service';
-import { CustomerService } from '../customer.service';
-import { Reservation } from '../models/reservation.model';
+import { UsersService } from '../../services/users.service';
+import { CustomerService } from '../../services/customer.service';
+import { Reservation } from '../../models/reservation.model';
 import { firstValueFrom } from 'rxjs';
-import { FieldService } from '../field.service';
+import { FieldService } from '../../services/field.service';
 import { MatDialog } from '@angular/material/dialog';
-import { ReservaConfirmDialogComponent } from '../dialogs/reserva-confirm-dialog/reserva-confirm-dialog.component';
+import { ReservaConfirmDialogComponent } from '../../dialogs/reserva-confirm-dialog/reserva-confirm-dialog.component';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
 
@@ -50,7 +50,7 @@ export class ReservaUsuarioComponent implements OnInit {
         const email = user?.email;
         if (email) {
           this.customerService
-            .getCustomerByEmail(email) 
+            .getCustomerByEmail(email)
             .subscribe((customer) => {
               this.usuarioId = customer.customerId;
             });

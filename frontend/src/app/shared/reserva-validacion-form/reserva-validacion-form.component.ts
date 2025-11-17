@@ -1,10 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { FieldService } from '../../field.service';
-import { ReservationService } from '../../reservation.service';
+import { FieldService } from '../../services/field.service';
+import { ReservationService } from '../../services/reservation.service';
 import { ReservaUtilsService } from '../../utils/reserva-utils.service';
- 
+
 @Component({
   selector: 'app-reserva-validacion-form',
   standalone: true,
