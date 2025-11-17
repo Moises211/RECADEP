@@ -2,7 +2,7 @@ import { Component, Inject, PLATFORM_ID } from '@angular/core';
 import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
-import { UsersService } from './users.service';
+import { UsersService } from './services/users.service';
 import { Router } from '@angular/router';
 
 @Component({

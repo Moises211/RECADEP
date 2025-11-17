@@ -2,9 +2,9 @@ import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser, isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { Reservation } from './models/reservation.model';
-import { environment } from './enviroment';
-import { CreateReservationDto } from './models/create-reservation.dto';
+import { Reservation } from '../models/reservation.model';
+import { environment } from '../enviroment';
+import { CreateReservationDto } from '../models/create-reservation.dto';
 
 @Injectable({
   providedIn: 'root',

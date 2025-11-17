@@ -3,8 +3,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { AuthService } from '@auth0/auth0-angular';
 import { MatDialog } from '@angular/material/dialog';
-import { ReservaPreviewDialogComponent } from '../dialogs/reserva-preview-dialog/reserva-preview-dialog.component';
-import { ReservaValidacionFormComponent } from '../shared/reserva-validacion-form/reserva-validacion-form.component';
+import { ReservaPreviewDialogComponent } from '../../dialogs/reserva-preview-dialog/reserva-preview-dialog.component';
+import { ReservaValidacionFormComponent } from '../../shared/reserva-validacion-form/reserva-validacion-form.component';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
 
