@@ -3,6 +3,7 @@ import { RouterOutlet, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { AuthService } from '@auth0/auth0-angular';
 import { UsersService } from './services/users.service';
+import { RoleAssignmentService } from './utils/role-assignment.service'; // <-- nuevo
 import { Router } from '@angular/router';
 
 @Component({
@@ -20,6 +21,7 @@ export class AppComponent {
   constructor(
     public auth: AuthService,
     private usersService: UsersService,
+    private roleSvc: RoleAssignmentService, // <-- nuevo
     private router: Router,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
@@ -40,8 +42,32 @@ export class AppComponent {
             console.log('Usuario: ', user?.email);
             console.log('Roles:', user?.['https://your-app.com/roles']);
 
-            this.isAdmin = user?.['https://your-app.com/roles']?.includes('admin');
-            this.isCustomer = user?.['https://your-app.com/roles']?.includes('customer');
+            // 🔥 Aquí llamamos al backend para asignar rol
+            if (user?.sub) {
+              this.roleSvc.assignRole(user.sub).subscribe((resp) => {
+                if (resp.status === 'rol_asignado') {
+                  console.log(
+                    'Rol asignado correctamente al usuario',
+                    (resp as { status: string; user_id: string }).user_id
+                  );
+                  // Forzar re-login para que el token traiga roles
+                  if (isPlatformBrowser(this.platformId)) {
+                    this.logout(); // usa tu método existente
+                    this.auth.loginWithRedirect();
+                  }
+                } else {
+                  console.warn(
+                    'No se pudo asignar rol:',
+                    (resp as { status: string; message: string }).message
+                  );
+                }
+              });
+            }
+
+            this.isAdmin =
+              user?.['https://your-app.com/roles']?.includes('admin');
+            this.isCustomer =
+              user?.['https://your-app.com/roles']?.includes('customer');
 
             this.auth.appState$.subscribe((state) => {
               if (this.isAdmin && !sessionStorage.getItem('adminRedirected')) {
