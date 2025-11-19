@@ -28,7 +28,13 @@ services:
       SPRING_DATASOURCE_PASSWORD: secret
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_SQL_INIT_MODE: never
-      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"              
+      SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION: "true"
+
+      auth0.domain: "dev-1xf2p1cnt6igj7cz.us.auth0.com"
+      auth0.m2m.clientId: "h5e8n4aP77hFMgd2O3IMkuczfPPZHAWg"
+      auth0.m2m.clientSecret: "9kFIi3-tUcBQVOTRbG-g21yQUv0tulD1pHyyrOI8fE5ds5uDWjb5oAAxtdBokgfy"
+      auth0.roleId: "rol_yEtIqswUnXDIfxPa"
+
     ports:
       - "8080:8080"
     depends_on:
