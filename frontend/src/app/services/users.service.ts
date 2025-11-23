@@ -54,8 +54,8 @@ export class UsersService {
   }
 
   // Nuevo método para sincronizar usuario con el backend por Auth0 con correo
-  sincronizarUsuario(): Observable<void> {
-    return this.http.post<void>(`${this.apiUrl}/sync`, {});
+  sincronizarUsuario(payload: Users): Observable<Users> {
+    return this.http.post<Users>(`${this.apiUrl}/sync`, payload);
   }
 
   getUserByEmail(email: string): Observable<Users> {
