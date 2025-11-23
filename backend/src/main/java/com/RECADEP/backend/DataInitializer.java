@@ -43,26 +43,28 @@ public class DataInitializer {
                 for (Field field : fiel) {
                     fieldRepository.save(field);
                 }
-
+                short a;
+                short b;
+                Users user1;
                 // --- 2. INSERCIÓN DE USERS ---
                 // Nota: Asumo que el constructor o setters manejan la conversión de tipos
                 
                 // Usuario 1: Moises Acosta (CUSTOMER)
-                Users user1 = new Users();
+                /*user1 = new Users();
                 user1.setBirthdate("03/11/1999");
-                short a = 5882;
+                a = 5882;
                 
                 user1.setDocumentNumber(a);
                 user1.setLastname("Acosta");
                 user1.setUsername("Moises");
                 user1.setEmail("moisesacosta8@gmail.com");
-                short b = 7268;
+                b = 7268;
                 user1.setTelephone(b);
                 user1 = usersRepository.save(user1); // Guardar para obtener el ID
-
+                */
                 // Usuario 2: Moises Alvarenga (EMPLOYEE)
                 Users user2 = new Users();
-                user2.setBirthdate("03/11/1999");
+                user2.setBirthdate("1999-11-03");
                 a = 5883;
                 user2.setDocumentNumber(a);
                 user2.setLastname("Alvarenga");
@@ -73,15 +75,15 @@ public class DataInitializer {
                 user2 = usersRepository.save(user2); // Guardar para obtener el ID
 
                 // --- 3. INSERCIÓN DE CUSTOMER (FK a User 1) ---
-                Customer customer = new Customer();
+                /*Customer customer = new Customer();
                 customer.setUsers(user1);
                 customer.setRegistrationDate("03/11/2025"); 
-                customerRepository.save(customer);
+                customerRepository.save(customer);*/
 
                 // --- 4. INSERCIÓN DE EMPLOYEE (FK a User 2) ---
                 Employee employee = new Employee();
                 employee.setUsers(user2);
-                employee.setDateHired("05/11/2025"); 
+                employee.setDateHired("2025-11-05"); 
                 employee.setPosition("GERENTE");
                 employeeRepository.save(employee);
 
