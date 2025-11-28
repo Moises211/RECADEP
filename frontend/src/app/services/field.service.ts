@@ -13,7 +13,8 @@ export class FieldService {
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
     ? 'http://spring-backend:8080/api/field'
-    : 'http://localhost:8080/api/field';
+    : 'https://recadep-zox1.onrender.com/api/field'
+      //'http://localhost:8080/api/field';
   }
   /*constructor(
     private http: HttpClient,
