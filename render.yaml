@@ -7,7 +7,7 @@ services:
     name: spring-backend
     rootDir: backend
     env: docker
-    plan: standard    
+    plan: starter    
     
     # Variables de Entorno
     envVars:
@@ -41,7 +41,7 @@ services:
     name: angular-frontend
     rootDir: frontend
     env: docker
-    plan: standard
+    plan: starter
         
     
     # Variables de Entorno
