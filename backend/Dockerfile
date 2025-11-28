@@ -2,6 +2,7 @@
 FROM maven:3.9.4-eclipse-temurin-17 AS build
 WORKDIR /app
 COPY . .
+WORKDIR /app/backend
 RUN mvn clean package
 
 # Etapa 2: Ejecución
