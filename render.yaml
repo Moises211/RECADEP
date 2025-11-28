@@ -3,7 +3,7 @@ services:
   # ----------------------------------------------------
   # 1. Backend API (Spring Boot) - Web Service
   # ----------------------------------------------------
-  - type: webService
+  - type: web
     name: spring-backend
     rootDir: backend
     env: docker
@@ -38,7 +38,7 @@ services:
   # ----------------------------------------------------
   # 2. Frontend (Angular) - Web Service (basado en Docker)
   # ----------------------------------------------------
-  - type: webService
+  - type: web
     name: angular-frontend
     rootDir: frontend
     env: docker
