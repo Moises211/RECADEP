@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { Reservation } from '../models/reservation.model';
 import { environment } from '../enviroment';
 import { CreateReservationDto } from '../models/create-reservation.dto';
+import { Customer } from '../models/customer.model';
 
 @Injectable({
   providedIn: 'root',
@@ -88,5 +89,11 @@ export class ReservationService {
         endTime,
       },
     });
+  }
+
+  getReservationsByCustomer(customer: Customer): Observable<Reservation[]> {
+    return this.http.get<Reservation[]>(
+      `${this.apiUrl}/by-customer/${customer.customerId}`,
+    );
   }
 }

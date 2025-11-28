@@ -1,10 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ReservaValidacionFormComponent } from '../../shared/reserva-validacion-form/reserva-validacion-form.component';
 import { ReservationService } from '../../services/reservation.service';
 import { AuthService } from '@auth0/auth0-angular';
-//import { CreateReservationDto } from '../models/create-reservation.dto';
 import { UsersService } from '../../services/users.service';
 import { CustomerService } from '../../services/customer.service';
 import { Reservation } from '../../models/reservation.model';
@@ -14,15 +13,87 @@ import { MatDialog } from '@angular/material/dialog';
 import { ReservaConfirmDialogComponent } from '../../dialogs/reserva-confirm-dialog/reserva-confirm-dialog.component';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import esLocale from '@fullcalendar/core/locales/es';
+import { MatTabsModule } from '@angular/material/tabs';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-reserva-usuario',
   standalone: true,
-  imports: [CommonModule, ReservaValidacionFormComponent],
+  imports: [
+    CommonModule,
+    ReservaValidacionFormComponent,
+    FullCalendarModule,
+    FormsModule,
+    MatTabsModule,
+  ],
   templateUrl: './reserva-usuario.component.html',
   styleUrls: ['./reserva-usuario.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
+// Componente para gestionar las reservas de un usuario
 export class ReservaUsuarioComponent implements OnInit {
+  currentView: string = 'dayGridMonth';
+  calendarOptions: any = {
+    height: '100%',
+    contentHeight: 'auto',
+    aspectRatio: 1.35,
+    slotMinTime: '06:00:00',
+    slotMaxTime: '22:00:00',
+    slotLabelFormat: {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    },
+    allDaySlot: false,
+    expandRows: true,
+    nowIndicator: true,
+    slotDuration: '01:00:00',
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth'
+    },
+    plugins: [dayGridPlugin, interactionPlugin],
+    initialView: 'dayGridMonth',
+    locale: esLocale,
+    events: [], // se llenará dinámicamente
+    viewDidMount: (arg: any) => {
+      this.currentView = arg.view.type;
+      console.log('Vista inicial:', this.currentView);
+    },
+    datesSet: (arg: any) => {
+      this.currentView = arg.view.type;
+      console.log('Vista cambiada:', this.currentView);
+    },
+    eventContent: function (arg: any) {
+      const start = new Date(arg.event.start).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      const end = new Date(arg.event.end).toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+      });
+      return {
+        html: `
+        <div class="fc-event-custom">
+          <span class="fc-time">${start} - ${end}</span>
+          <span class="fc-title">${arg.event.title}</span>
+        </div>`,
+      };
+    },
+    eventClick: function (info: any) {
+      alert(
+        `Reserva seleccionada:\n${info.event.title}\nInicio: ${info.event.start}\nFin: ${info.event.end}`
+      );
+    },
+  };
+  modo: 'crear' | 'ver' = 'crear';
   initialValues: any = null;
   disponibilidad: boolean | null = null;
   datosReserva: {
@@ -43,7 +114,7 @@ export class ReservaUsuarioComponent implements OnInit {
     private dialog: MatDialog,
     @Inject(PLATFORM_ID) private platformId: Object
   ) {}
-
+  // Inicialización del componente
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
       this.auth.user$.subscribe((user) => {
@@ -53,6 +124,19 @@ export class ReservaUsuarioComponent implements OnInit {
             .getCustomerByEmail(email)
             .subscribe((customer) => {
               this.usuarioId = customer.customerId;
+
+              this.reservationService
+                .getReservationsByCustomer(customer)
+                .subscribe((reservations) => {
+                  console.log('Reservas del usuario:', reservations);
+                  this.calendarOptions.events = reservations.map((r) => ({
+                    id: r.reservationId,
+                    title: `${r.field.fieldType.toLocaleUpperCase()} ${r.reservationId}`,
+                    start: `${r.reservationDate}T${r.startTime}`,
+                    end: `${r.reservationDate}T${r.endTime}`,
+                  }));
+                  console.log(this.calendarOptions.events);
+                });
             });
         }
       });

@@ -18,7 +18,7 @@ import com.RECADEP.backend.Entitys.Reservation;
 import com.RECADEP.backend.Repositories.FieldRepository;
 import com.RECADEP.backend.Repositories.ReservationRepository;
 import org.springframework.web.bind.annotation.RequestParam;
-
+import com.RECADEP.backend.Controllers.CustomerController;
 
 @RestController
 @RequestMapping("/api/reservation")
@@ -28,6 +28,7 @@ public class ReservationController {
     private ReservationRepository reservationRepository;
     @Autowired
     private FieldRepository fieldRepository;
+    
 
     @GetMapping
     public List<Reservation> getAllReservations() {
@@ -36,22 +37,23 @@ public class ReservationController {
 
     @GetMapping("/{id}")
     public Reservation getReservation(@PathVariable Long id) {
-        return reservationRepository.findById(id).orElse(null); 
+        return reservationRepository.findById(id).orElse(null);
     }
 
     @GetMapping("/collision")
-    public boolean existsCollision(@RequestParam Long field_id, @RequestParam String reservationDate, 
-    @RequestParam String startTime, @RequestParam String endTime) {
-        
+    public boolean existsCollision(@RequestParam Long field_id, @RequestParam String reservationDate,
+            @RequestParam String startTime, @RequestParam String endTime) {
+
         Field field = fieldRepository.findById(field_id).orElse(null);
-        if(field == null) return false;
-        
+        if (field == null)
+            return false;
+
         return reservationRepository.existsCollision(field, reservationDate, startTime, endTime);
-    }    
+    }
 
     @PostMapping
     public Reservation createReservation(@RequestBody Reservation reservation) {
-        System.out.println("Recibido: " + reservation.getCustomer()); 
+        System.out.println("Recibido: " + reservation.getCustomer());
         return reservationRepository.save(reservation);
     }
 
@@ -66,4 +68,10 @@ public class ReservationController {
     public void deleteReservation(@PathVariable Long id) {
         reservationRepository.deleteById(id);
     }
+
+    @GetMapping("/by-customer/{id}")
+    public List<Reservation> getReservationsByCustomer(@PathVariable Long id) {
+        return reservationRepository.findByCustomerId(id);
+    }
+
 }

@@ -7,6 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 // Función para obtener redirect_uri según entorno
 function getRedirectUri(): string {
@@ -35,7 +36,8 @@ export const appConfig: ApplicationConfig = {
       }),
       MatDialogModule,
       MatButtonModule,
-      ReactiveFormsModule
+      ReactiveFormsModule,
+      FullCalendarModule
     )
   ],
 };
