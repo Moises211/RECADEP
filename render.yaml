@@ -7,8 +7,7 @@ services:
     name: spring-backend
     rootDir: backend
     env: docker
-    plan: standard
-    port: 8080
+    plan: standard    
     
     # Variables de Entorno
     envVars:
@@ -43,9 +42,7 @@ services:
     rootDir: frontend
     env: docker
     plan: standard
-    
-    # Puerto que expone el contenedor de Angular (4200)
-    port: 4200 
+        
     
     # Variables de Entorno
     envVars:
