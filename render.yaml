@@ -1,22 +1,17 @@
+# Blueprint version for Render V1
 services:
   # ----------------------------------------------------
   # 1. Backend API (Spring Boot) - Web Service
   # ----------------------------------------------------
   - type: webService
     name: spring-backend
-    # Directorio que contiene el Dockerfile y el código fuente del Backend
     rootDir: backend
-    # Indica a Render que use el Dockerfile que se encuentra en 'rootDir'
     env: docker
-    plan: standard # Puedes cambiar a 'starter' o un plan superior
-    
-    # Puerto de la aplicación (8080)
+    plan: standard
     port: 8080
     
-    # Variables de Entorno (SECRETS)
-    # Debes configurar estos valores como Secrets en el Dashboard de Render.
+    # Variables de Entorno
     envVars:
-      # Variables de la base de datos
       - key: PROD_DATASOURCE_URL
         value: ${{ env.PROD_DATASOURCE_URL }}
       - key: PROD_DATASOURCE_USERNAME
@@ -24,7 +19,6 @@ services:
       - key: PROD_DATASOURCE_PASSWORD
         value: ${{ env.PROD_DATASOURCE_PASSWORD }}
         
-      # Configuraciones de Spring/JPA
       - key: SPRING_JPA_HIBERNATE_DDL_AUTO
         value: update
       - key: SPRING_SQL_INIT_MODE
@@ -32,7 +26,6 @@ services:
       - key: SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION
         value: "true"
         
-      # Variables de Auth0
       - key: auth0.domain
         value: ${{ env.AUTH0_DOMAIN }}
       - key: auth0.m2m.clientId
@@ -47,9 +40,7 @@ services:
   # ----------------------------------------------------
   - type: webService
     name: angular-frontend
-    # Directorio que contiene el Dockerfile y el código fuente del Frontend
     rootDir: frontend
-    # Indica a Render que use el Dockerfile que se encuentra en 'rootDir'
     env: docker
     plan: standard
     
@@ -58,8 +49,5 @@ services:
     
     # Variables de Entorno
     envVars:
-      # IMPORTANTE: En Render, para que el Frontend (Angular) pueda llamar al Backend,
-      # debe usar la URL PÚBLICA (HTTPS) del servicio 'spring-backend', no la URL interna de Docker.
-      # Debes reemplazar este valor con la URL pública real después del primer despliegue.
       - key: API_BASE_URL
         value: "https://NOMBRE_DE_TU_BACKEND.onrender.com"
