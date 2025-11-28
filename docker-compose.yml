@@ -27,8 +27,7 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: angular-frontend
-    environment:
-      NODE_OPTIONS: "--max-old-space-size=2048"
+    environment:      
       API_BASE_URL: http://spring-backend:8080
     deploy:
       resources:
