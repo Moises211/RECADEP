@@ -28,11 +28,7 @@ services:
       dockerfile: Dockerfile
     container_name: angular-frontend
     environment:      
-      API_BASE_URL: http://spring-backend:8080
-    deploy:
-      resources:
-        limits:
-          memory: 3072m
+      API_BASE_URL: http://spring-backend:8080    
     ports:
       - "4200:4200"
     depends_on:
