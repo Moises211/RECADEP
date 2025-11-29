@@ -17,13 +17,13 @@ export function app(): express.Express {
   //const indexHtml = join(browserDistFolder, 'index.html');
 
   const commonEngine = new CommonEngine();
-
+  const BACKEND_INTERNAL_URL = process.env['API_RENDER_INTERNAL_URL'] || 'http://localhost:8080';
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
   // Example Express Rest API endpoints
   server.use('/api', createProxyMiddleware({
-  target: 'http://spring-backend:8080',
+  target: BACKEND_INTERNAL_URL,
   changeOrigin: true
   }));
 
