@@ -18,6 +18,7 @@ export function app(): express.Express {
 
   const commonEngine = new CommonEngine();
   const BACKEND_INTERNAL_URL = process.env['API_RENDER_INTERNAL_URL'] || 'http://localhost:8080';
+  console.log(`[DIAG] Proxy Target URL configurada: ${BACKEND_INTERNAL_URL}`);
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
