@@ -8,9 +8,10 @@ import { environment } from '../enviroment';
   providedIn: 'root',
 })
 export class FieldService {
-  private apiUrl: string = '/api/field';
-  constructor(private http: HttpClient) { }
-  /*constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
+  private apiUrl: string;
+  //private apiUrl: string = '/api/field';
+  //constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
     ? 'http://spring-backend:8080/api/field'
     : 'https://recadep-zox1.onrender.com/api/field'
