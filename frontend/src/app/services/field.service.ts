@@ -16,7 +16,7 @@ export class FieldService {
   constructor(private http: HttpClient, @Inject(PLATFORM_ID) private platformId: Object) {
     this.apiUrl = isPlatformServer(this.platformId)
     ? 'http://spring-backend:8080/api/field'
-    : environment.springRender + '/field'
+    : environment.springRender + '/field';
       //'http://localhost:8080/api/field';
   }
   /*constructor(
