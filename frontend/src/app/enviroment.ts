@@ -1,5 +1,5 @@
 export const environment = {
-  production: process.env['NODE_ENV'] === 'production',  
+  production: false,
   springRender: process.env['RENDER_BACKEND_URL'] 
     ? `${process.env['RENDER_BACKEND_URL']}/api` // Si se inyecta, usa esa URL + /api
     : 'https://recadep-zox1.onrender.com/api', // Fallback por defecto
