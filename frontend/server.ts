@@ -25,8 +25,7 @@ export function app(): express.Express {
   // Example Express Rest API endpoints
   server.use('/api', createProxyMiddleware({
   target: BACKEND_INTERNAL_URL,
-  changeOrigin: true,
-  logLevel: 'debug'
+  changeOrigin: true
   }));
 
   // Serve static files from /browser
