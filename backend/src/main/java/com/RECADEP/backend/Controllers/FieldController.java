@@ -19,7 +19,7 @@ import com.RECADEP.backend.Repositories.FieldRepository;
 
 @RestController
 @RequestMapping("/api/field")
-@CrossOrigin(origins = "https://recadep-f27i.onrender.com")
+@CrossOrigin(origins = "${FRONTEND_CORS_DOMAIN}")
 public class FieldController {
 
     @Autowired
