@@ -7,7 +7,7 @@ import { catchError } from 'rxjs/operators';
 // Asume que el modelo Field y environment existen en rutas relativas correctas
 import { Field } from './models/field.model';
 // NOTA: Asegúrate que esta ruta '..' coincide con la ubicación real de tu environment.ts
-import { environment } from './environment'; 
+import { environment } from '../environment'; 
 
 @Injectable({
   providedIn: 'root',
