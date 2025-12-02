@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ReservaValidacionFormComponent } from '../../shared/reserva-validacion-form/reserva-validacion-form.component';
@@ -13,13 +13,18 @@ import { MatDialog } from '@angular/material/dialog';
 import { ReservaConfirmDialogComponent } from '../../dialogs/reserva-confirm-dialog/reserva-confirm-dialog.component';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
-import { FullCalendarModule } from '@fullcalendar/angular';
+import {
+  FullCalendarModule,
+  FullCalendarComponent,
+} from '@fullcalendar/angular';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import esLocale from '@fullcalendar/core/locales/es';
 import { MatTabsModule } from '@angular/material/tabs';
 import { FormsModule } from '@angular/forms';
+import { ReservaEditDialogComponent } from '../../reserva-edit-dialog/reserva-edit-dialog.component';
+import { co } from '@fullcalendar/core/internal-common';
 
 @Component({
   selector: 'app-reserva-usuario',
@@ -37,6 +42,7 @@ import { FormsModule } from '@angular/forms';
 })
 // Componente para gestionar las reservas de un usuario
 export class ReservaUsuarioComponent implements OnInit {
+  @ViewChild('calendar') calendarComponent!: FullCalendarComponent;
   currentView: string = 'dayGridMonth';
   calendarOptions: any = {
     height: '100%',
@@ -56,7 +62,7 @@ export class ReservaUsuarioComponent implements OnInit {
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth'
+      right: 'dayGridMonth',
     },
     plugins: [dayGridPlugin, interactionPlugin],
     initialView: 'dayGridMonth',
@@ -87,10 +93,49 @@ export class ReservaUsuarioComponent implements OnInit {
         </div>`,
       };
     },
-    eventClick: function (info: any) {
-      alert(
+    eventClick: (info: any) => {
+      const start = new Date(info.event.start);
+
+      this.dialog
+        .open(ReservaEditDialogComponent, {
+          width: '400px',
+          data: {
+            title: info.event.title,
+            //date: start.toISOString().split('T')[0],
+            reservation: info.event.extendedProps.reservation,
+          },
+        })
+        .afterClosed()
+        .subscribe((result: any) => {
+          if (result) {
+            // Aquí actualizas el evento en tu backend y refrescas el calendario
+            this.reservationService
+              .update(result.reservationId, result)
+              .subscribe(() => {
+                alert('✅ Reserva actualizada');
+                this.reservationService
+                  .getReservationsByCustomer(result.customer)
+                  .subscribe((reservations) => {
+                    this.calendarOptions.events = reservations.map((r) => ({
+                      id: r.reservationId,
+                      title: `${r.field.fieldType.toUpperCase()} ${
+                        r.field.fieldId
+                      }`,
+                      start: `${r.reservationDate}T${r.startTime}`,
+                      end: `${r.reservationDate}T${r.endTime}`,
+                      extendedProps: { reservation: r },
+                    }));
+                    console.log('actualizado', this.calendarOptions.events);
+                  });
+              });
+            console.log('Reserva editada:', result, result.reservationId);
+            const calendarApi = this.calendarComponent.getApi(); // referencia al calendario
+            const event = calendarApi.getEventById(result.reservationId);
+          }
+        });
+      /*alert(
         `Reserva seleccionada:\n${info.event.title}\nInicio: ${info.event.start}\nFin: ${info.event.end}`
-      );
+      );*/
     },
   };
   modo: 'crear' | 'ver' = 'crear';
@@ -131,9 +176,14 @@ export class ReservaUsuarioComponent implements OnInit {
                   console.log('Reservas del usuario:', reservations);
                   this.calendarOptions.events = reservations.map((r) => ({
                     id: r.reservationId,
-                    title: `${r.field.fieldType.toLocaleUpperCase()} ${r.reservationId}`,
+                    title: `${r.field.fieldType.toLocaleUpperCase()} ${
+                      r.field.fieldId
+                    }`,
                     start: `${r.reservationDate}T${r.startTime}`,
                     end: `${r.reservationDate}T${r.endTime}`,
+                    extendedProps: {
+                      reservation: r,
+                    },
                   }));
                   console.log(this.calendarOptions.events);
                 });

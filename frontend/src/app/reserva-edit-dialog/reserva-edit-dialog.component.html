@@ -1,1 +1,43 @@
-<p>reserva-edit-dialog works!</p>
+<h2 mat-dialog-title>{{ data.title }}</h2>
+
+<mat-dialog-content>
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Cancha</mat-label>
+    <mat-select [(ngModel)]="selectedField"  name="selectedField" required>
+      <!--mat-option [label="{{ selectedFieldId ? (fieldType + ' (# ' + selectedFieldId + ')') : 'Cancha' }}" [value]="selectedFieldId"></!--mat-option-->
+      <mat-option *ngFor="let field of fieldList" [value]="field">
+        {{ field.fieldType }} (# {{ field.fieldId }})
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill" style="width: 100%;">
+    <mat-label>Fecha</mat-label>
+    <input matInput [matDatepicker]="picker" [(ngModel)]="fecha" name="fecha" [min]="fechaMin" required />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+
+  <div style="display: flex; gap: 12px;">
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Hora inicio</mat-label>
+      <input matInput type="time" [value]="horaInicio" [(ngModel)]="horaInicio" name="horaInicio" (change)="onHoraInicioChange()" min="08:00"
+        max="21:00" required />
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" style="flex: 1;">
+      <mat-label>Hora fin</mat-label>
+      <input matInput type="time" [value]="horaFin"  [(ngModel)]="horaFin" name="horaFin" [disabled]="horaFinDisabled" min="08:30"
+        max="21:30" required />
+    </mat-form-field>
+  </div>
+  <div *ngIf="horaFin && !validarHoras()" style="color: #C44D58; margin-top: 8px;">
+    ⚠️ La duración debe ser entre 30 minutos y 2 horas, y la hora fin no puede ser menor que la inicial ni mayor que
+    21:30.
+  </div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="guardar()">Guardar</button>
+</mat-dialog-actions>

@@ -41,7 +41,7 @@ export class AppComponent {
         if (auth) {
           this.auth.user$.subscribe((user) => {
             console.log('Usuario: ', user?.email);
-            const roles = user?.['https://your-app.com/roles'];
+            const roles = user?.['https://your-app.com/roles'] || [];
             console.log('Roles:', user?.['https://your-app.com/roles']);
 
             // Aquí llamamos al backend para asignar rol
