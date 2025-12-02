@@ -22,7 +22,8 @@ import com.RECADEP.backend.Controllers.CustomerController;
 
 @RestController
 @RequestMapping("/api/reservation")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${FRONTEND_CORS_DOMAIN}")
 public class ReservationController {
     @Autowired
     private ReservationRepository reservationRepository;

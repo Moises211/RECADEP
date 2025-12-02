@@ -25,7 +25,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/customer")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${FRONTEND_CORS_DOMAIN}")
 public class CustomerController {
     @Autowired
     private CustomerRepository customerRepository;

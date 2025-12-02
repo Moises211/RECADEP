@@ -31,7 +31,8 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${FRONTEND_CORS_DOMAIN}")
 public class UsersController {
     @Autowired
     private UsersRepository usersRepository;
