@@ -8,7 +8,8 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${FRONTEND_CORS_DOMAIN}")
 public class RoleController {
 
   private final Auth0Service auth0Service;

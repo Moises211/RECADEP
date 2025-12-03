@@ -1,0 +1,50 @@
+# Blueprint version for Render V1
+services:
+  # ----------------------------------------------------
+  # 1. Backend API (Spring Boot) - Web Service
+  # ----------------------------------------------------
+  - type: web
+    name: spring-backend
+    rootDir: backend
+    env: docker
+    plan: starter    
+    
+    # Variables de Entorno
+    envVars:
+      - key: PROD_DATASOURCE_URL
+        value: ${{ env.PROD_DATASOURCE_URL }}
+      - key: PROD_DATASOURCE_USERNAME
+        value: ${{ env.PROD_DATASOURCE_USERNAME }}
+      - key: PROD_DATASOURCE_PASSWORD
+        value: ${{ env.PROD_DATASOURCE_PASSWORD }}
+        
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: update
+      - key: SPRING_SQL_INIT_MODE
+        value: never
+      - key: SPRING_JPA_DEFER_DATASOURCE_INITIALIZATION
+        value: "true"
+        
+      - key: auth0.domain
+        value: ${{ env.AUTH0_DOMAIN }}
+      - key: auth0.m2m.clientId
+        value: ${{ env.AUTH0_CLIENT }}
+      - key: auth0.m2m.clientSecret
+        value: ${{ env.AUTH0_CLIENT_SECRET }}
+      - key: auth0.roleId
+        value: ${{ env.AUTH0_ROLEID }}
+        
+  # ----------------------------------------------------
+  # 2. Frontend (Angular) - Web Service (basado en Docker)
+  # ----------------------------------------------------
+  - type: web
+    name: angular-frontend
+    rootDir: frontend
+    env: docker
+    plan: starter
+        
+    
+    # Variables de Entorno
+    envVars:
+      - key: API_BASE_URL
+        value: "https://NOMBRE_DE_TU_BACKEND.onrender.com"

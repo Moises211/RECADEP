@@ -1,19 +1,32 @@
-<section class="quick-search">
-  <h2>Confirmar Reserva</h2>
+<mat-tab-group [selectedIndex]="modo === 'crear' ? 0 : 1" (selectedIndexChange)="modo = $event === 0 ? 'crear' : 'ver'"
+  animationDuration="1000" mat-stretch-tabs="false" mat-align-tabs="center">
+  <mat-tab label="Hacer reserva">
+    <div *ngIf="modo === 'crear'">
+      <section class="quick-search">
+        <h2>Confirmar Reserva</h2>
 
-  <!-- Formulario que maneja selección y verificación -->
-  <app-reserva-validacion-form
-    [initialValues]="initialValues"
-    (onDisponibilidad)="onDisponibilidad($event)"
-    (onDatosReserva)="onDatosReserva($event)"
-  ></app-reserva-validacion-form>
+        <!-- Formulario que maneja selección y verificación -->
+        <app-reserva-validacion-form [initialValues]="initialValues" (onDisponibilidad)="onDisponibilidad($event)"
+          (onDatosReserva)="onDatosReserva($event)"></app-reserva-validacion-form>
 
-  <!-- Botón de confirmación solo si está disponible -->
-  <button
-  *ngIf="disponibilidad === true"
-  (click)="abrirModalConfirmacion()"
-  class="btn btn-success">
-  Confirmar Reserva
-  </button>
-</section>
+        <!-- Botón de confirmación solo si está disponible -->
+        <button *ngIf="disponibilidad === true" (click)="abrirModalConfirmacion()" class="btn btn-success">
+          Confirmar Reserva
+        </button>
 
+      </section>
+    </div>
+  </mat-tab>
+  <mat-tab label="Ver reservas">
+    <div *ngIf="modo === 'ver'">
+      <section class="calendar-view" [ngClass]="{
+             'vista-mes': currentView === 'dayGridMonth',
+             'vista-semana': currentView === 'timeGridWeek',
+             'vista-dia': currentView === 'timeGridDay'
+           }">
+        <h2>Mis Reservas</h2>
+        <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+      </section>
+    </div>
+  </mat-tab>
+</mat-tab-group>

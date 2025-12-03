@@ -7,6 +7,9 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { provideNativeDateAdapter } from '@angular/material/core';
+import { AuthService } from '@auth0/auth0-angular';
 
 // Función para obtener redirect_uri según entorno
 function getRedirectUri(): string {
@@ -17,13 +20,18 @@ function getRedirectUri(): string {
   // SSR (Node) → fallback seguro
   return process.env['AUTH0_REDIRECT_URI'] || 'http://localhost:4200';
 }
+function isBrowser(): boolean {
+  return typeof window !== 'undefined';
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideNativeDateAdapter(),
     provideHttpClient(withFetch()),
     provideRouter(routes),
     provideAnimationsAsync(),
     importProvidersFrom(
+      isBrowser() ?
       AuthModule.forRoot({
         domain: 'dev-1xf2p1cnt6igj7cz.us.auth0.com',
         clientId: '1hw2tQ6FfezNmO2KDtTGpU5EF5Howorv',
@@ -32,10 +40,13 @@ export const appConfig: ApplicationConfig = {
         },
         cacheLocation: 'localstorage',
         useRefreshTokens: true
-      }),
+      }) : [],
+
       MatDialogModule,
       MatButtonModule,
-      ReactiveFormsModule
-    )
+      ReactiveFormsModule,
+      FullCalendarModule
+    ),
+    !isBrowser() ? { provide: AuthService, useValue: {} } : [],
   ],
 };

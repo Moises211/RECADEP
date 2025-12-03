@@ -32,7 +32,7 @@ services:
       auth0.m2m.clientId: ${AUTH0_CLIENT}
       auth0.m2m.clientSecret: ${AUTH0_CLIENT_SECRET}
       auth0.roleId: ${AUTH0_ROLEID}
-
+      FRONTEND_CORS_DOMAIN: http://localhost:4200
     ports:
       - "8080:8080"
     depends_on:
@@ -50,6 +50,7 @@ services:
       dockerfile: Dockerfile
     container_name: angular-frontend
     environment:
+      BACKEND_INTERNAL_URL: ${API_RENDER_INTERNAL_URL}
       NODE_OPTIONS: "--max-old-space-size=2048"
       API_BASE_URL: http://spring-backend:8080
     deploy:

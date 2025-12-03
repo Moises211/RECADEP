@@ -18,7 +18,8 @@ import com.RECADEP.backend.Repositories.RentRepository;
 
 @RestController
 @RequestMapping("/api/rent")
-@CrossOrigin(origins = "http://localhost:4200")
+//@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "${FRONTEND_CORS_DOMAIN}")
 public class RentController {
 
     @Autowired
