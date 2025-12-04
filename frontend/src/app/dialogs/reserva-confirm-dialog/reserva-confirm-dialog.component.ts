@@ -14,9 +14,11 @@ export class ReservaConfirmDialogComponent {
 
   confirmar(): void {
     this.dialogRef.close(true);
+    window.location.reload();
   }
 
   cancelar(): void {
     this.dialogRef.close(false);
+    window.location.reload();
   }
 }

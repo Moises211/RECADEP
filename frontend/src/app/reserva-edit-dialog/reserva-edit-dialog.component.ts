@@ -42,7 +42,9 @@ export class ReservaEditDialogComponent implements OnInit {
   horaFin = '';
   horaFinDisabled = true;
   fieldType = '';
-
+  isAdmin: boolean;
+  statusList: string[] = ['Pendiente', 'Confirmada', 'Cancelada', 'Completada'];
+  status= '';
   constructor(
     private dialogRef: MatDialogRef<ReservaEditDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -50,6 +52,7 @@ export class ReservaEditDialogComponent implements OnInit {
     private reservaUtils: ReservaUtilsService
   ) {
     this.reserva = data.reservation;
+    this.isAdmin = data.context === 'admin';
   }
 
   ngOnInit(): void {
@@ -64,7 +67,7 @@ export class ReservaEditDialogComponent implements OnInit {
       this.fecha = new Date();
       console.log('Usando fecha actual:', this.fecha);
     }
-
+    this.status = this.reserva.status || 'Pendiente';
     this.horaInicio = this.reserva.startTime || '';
     this.horaFin = this.reserva.endTime || '';
     this.horaFinDisabled = !this.horaInicio;
@@ -109,7 +112,9 @@ export class ReservaEditDialogComponent implements OnInit {
       !this.fecha ||
       !this.horaInicio ||
       !this.horaFin ||
+      !this.status ||
       !this.validarHoras()
+
     ) {
       alert(
         '⛔ Verifica los campos: duración entre 30 min y 2 horas, fin ≤ 21:30'
@@ -121,7 +126,7 @@ export class ReservaEditDialogComponent implements OnInit {
       reservationDate: this.fecha.toISOString().split('T')[0],
       startTime: this.horaInicio,
       endTime: this.horaFin,
-      status: this.reserva.status,
+      status: this.status ,
       field: this.selectedField,
       customer: this.reserva.customer,
     };
