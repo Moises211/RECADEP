@@ -4,7 +4,8 @@ import { catchError, map, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class RoleAssignmentService {
-  private baseUrl = 'http://localhost:8080/api';
+  //private baseUrl = 'http://localhost:8080/api';
+  private baseUrl = 'https://recadep-zox1.onrender.com/api';
 
   constructor(private http: HttpClient) {}
 
