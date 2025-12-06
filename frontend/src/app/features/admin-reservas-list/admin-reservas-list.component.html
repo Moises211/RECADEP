@@ -1,0 +1,162 @@
+<section class="reservas-section">
+  <div class="container">
+    <div class="reservas-wrapper">
+      <h2 class="mb-4">Lista de Reservas</h2>
+      <form [formGroup]="searchForm" (ngSubmit)="applyFilter()" class="mb-3">
+        Buscar Reservas:
+        <div class="row g-3 align-items-center">
+          <div class="col-md-2">
+            <input formControlName="reservationId" class="form-control" placeholder="ID Reserva" />
+          </div>
+          <div class="col-md-3">
+            <input formControlName="customerName" class="form-control" placeholder="Nombre Cliente" />
+          </div>
+          <div class="col-md-2">
+            <input formControlName="documentNumber" class="form-control" placeholder="Documento" />
+          </div>
+          <div class="col-md-2">
+            <input formControlName="fieldType" class="form-control" placeholder="Tipo Cancha" />
+          </div>
+          <div class="col-md-2">
+            <input formControlName="reservationDate" type="date" class="form-control" />
+          </div>
+          <div class="btn-group col-auto d-flex flex-row justify-content-center mt-0" role="group">
+            <!--div class="col-auto d-flex flex-column gap-2 h-100 justify-content-center"></!--div-->
+            <!--div class="btn-group mt-2" role="group" aria-label="Operaciones de búsqueda"></!--div-->
+            <button type="submit" class="btn btn-outline-secondary "><i class="bi bi-search"></i></button>
+            <button type="button" class="btn btn-outline-secondary " (click)="clearFilter()"><i
+                class="bi bi-eraser-fill"></i></button>
+          </div>
+        </div>
+      </form>
+      <div class="mat-elevation-z8">
+        <div class="table-responsive shadow-sm rounded border">
+          <table mat-table [dataSource]="dataSource" matSort class="table table-hover table-striped align-middle">
+
+            <!-- Código -->
+            <ng-container matColumnDef="reservationId">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Código</th>
+              <td mat-cell *matCellDef="let reserva">
+                <span class="badge bg-primary">{{ reserva.reservationId }}</span>
+              </td>
+            </ng-container>
+
+            <!-- Cancha -->
+            <ng-container matColumnDef="fieldId">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Cancha</th>
+              <td mat-cell *matCellDef="let reserva"># {{ reserva.field.fieldId }}</td>
+            </ng-container>
+
+            <!-- Tipo -->
+            <ng-container matColumnDef="fieldType">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Tipo</th>
+              <td mat-cell *matCellDef="let reserva">{{ reserva.field.fieldType }}</td>
+            </ng-container>
+
+            <!-- Fecha -->
+            <ng-container matColumnDef="reservationDate">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Fecha</th>
+              <td mat-cell *matCellDef="let reserva">{{ reserva.reservationDate }}</td>
+            </ng-container>
+
+            <!-- Hora Inicio -->
+            <ng-container matColumnDef="startTime">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora Inicio</th>
+              <td mat-cell *matCellDef="let reserva">{{ reserva.startTime }}</td>
+            </ng-container>
+
+            <!-- Hora Fin -->
+            <ng-container matColumnDef="endTime">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Hora Fin</th>
+              <td mat-cell *matCellDef="let reserva">{{ reserva.endTime }}</td>
+            </ng-container>
+
+            <!-- Nombre -->
+            <ng-container matColumnDef="customerName">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Nombre</th>
+              <td mat-cell *matCellDef="let reserva">
+                {{ reserva.customer.users.username }} {{ reserva.customer.users.lastname }}
+              </td>
+            </ng-container>
+
+            <!-- Email -->
+            <ng-container matColumnDef="email">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Email</th>
+              <td mat-cell *matCellDef="let reserva">{{ reserva.customer.users.email }}</td>
+            </ng-container>
+
+            <!-- Teléfono -->
+            <ng-container matColumnDef="telephone">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Teléfono</th>
+              <td mat-cell *matCellDef="let reserva">{{ reserva.customer.users.telephone }}</td>
+            </ng-container>
+
+            <!-- Estado -->
+            <ng-container matColumnDef="status">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Estado</th>
+              <td mat-cell *matCellDef="let reserva">{{ reserva.status }}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="actions">
+              <th mat-header-cell *matHeaderCellDef>Acciones</th>
+              <td mat-cell *matCellDef="let reserva">
+                <button mat-button type="button" class="btn btn-outline-primary " (click)="editReserva(reserva)">
+                  <i class="bi bi-pencil-fill"></i>
+                </button>
+              </td>
+            </ng-container>
+
+            <!-- Header y Rows -->
+            <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+
+          <!-- Paginador -->
+          <mat-paginator [pageSize]="10" [pageSizeOptions]="[10, 20, 50]" showFirstLastButtons>
+          </mat-paginator>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!--section class="reservas-section">
+  <div class="container">
+    <div class="reservas-wrapper">
+      <h2 class="mb-4"> Lista de Reservas</h2>
+
+      <div class="table-responsive shadow-sm rounded border">
+        <table class="table table-hover table-striped align-middle">
+          <thead class="table-dark">
+            <tr>
+              <th>Código</th>
+              <th>Cancha</th>
+              <th>Tipo</th>
+              <th>Fecha</th>
+              <th>Hora Inicio</th>
+              <th>Hora Fin</th>
+              <th>Nombre</th>
+              <th>Email</th>
+              <th>Teléfono</th>
+              <th>Estado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let reserva of reservas">
+              <td><span class="badge bg-primary">{{ reserva.reservationId }}</span></td>
+              <td>{{ "# " + reserva.field.fieldId}}</td>
+              <td>{{ reserva.field.fieldType}}</td>
+              <td>{{ reserva.reservationDate }}</td>
+              <td>{{ reserva.startTime }}</td>
+              <td>{{ reserva.endTime }}</td>
+              <td>{{ reserva.customer.users.username +" "+ reserva.customer.users.lastname}}</td>
+              <td>{{ reserva.customer.users.email }}</td>
+              <td>{{ reserva.customer.users.telephone }}</td>
+              <td>{{ reserva.status }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</-section-->

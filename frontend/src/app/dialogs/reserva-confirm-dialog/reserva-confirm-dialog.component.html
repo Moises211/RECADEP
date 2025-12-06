@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Confirmar Reserva</h2>
+<div mat-dialog-content>
+  <h3>Datos del Cliente</h3>
+  <p><strong>Nombre:</strong> {{ data.customer.users.username }}</p>
+  <p><strong>Correo:</strong> {{ data.customer.users.email }}</p>
+  <p><strong>Teléfono:</strong> {{ data.customer.users.telephone }}</p>
+
+  <h3>Datos de la Reserva</h3>
+  <p><strong>Cancha:</strong> {{ data.reserva.field.fieldType }}</p>
+  <p><strong>Fecha:</strong> {{ data.reserva.reservationDate }}</p>
+  <p><strong>Inicio:</strong> {{ data.reserva.startTime }}</p>
+  <p><strong>Fin:</strong> {{ data.reserva.endTime }}</p>
+</div>
+<div mat-dialog-actions align="end">
+  <button mat-button (click)="cancelar()">Cancelar</button>
+  <button mat-raised-button color="primary" (click)="confirmar()">Confirmar</button>
+</div>
+

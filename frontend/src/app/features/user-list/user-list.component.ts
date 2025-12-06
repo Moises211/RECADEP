@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { UserService, User } from '../user.service';
+import { UserService, User } from '../../services/user.service';
 import { HttpClientModule } from '@angular/common/http';
 
 @Component({
@@ -12,7 +12,7 @@ import { HttpClientModule } from '@angular/common/http';
 })
 export class UserListComponent {
   users: User[] = [];
-  
+
   constructor(private userService: UserService) {
     this.userService.getUsers().subscribe(data => {
       this.users = data;

@@ -1,0 +1,9 @@
+<h2>¿Deseas continuar con la reserva?</h2>
+<p><strong>Cancha:</strong> {{ data.canchaId }}</p>
+<p><strong>Inicio:</strong> {{ data.fechaInicio }}</p>
+<p><strong>Fin:</strong> {{ data.fechaFin }}</p>
+
+<div class="dialog-actions">
+  <button (click)="confirmar()">Confirmar</button>
+  <button (click)="cancelar()">Cancelar</button>
+</div>

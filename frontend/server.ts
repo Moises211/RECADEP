@@ -17,21 +17,35 @@ export function app(): express.Express {
   //const indexHtml = join(browserDistFolder, 'index.html');
 
   const commonEngine = new CommonEngine();
-
+  const BACKEND_INTERNAL_URL =
+    process.env['API_RENDER_INTERNAL_URL'] || 'http://localhost:8080';
+  console.log(`[DIAG] Proxy Target URL configurada: ${BACKEND_INTERNAL_URL}`);
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
   // Example Express Rest API endpoints
-  server.use('/api', createProxyMiddleware({
-  target: 'http://spring-backend:8080',
-  changeOrigin: true
-  }));
+  server.use(
+    '/api',
+    createProxyMiddleware({
+      target: BACKEND_INTERNAL_URL,
+      changeOrigin: true,
+    })
+  );
 
   // Serve static files from /browser
   server.use(express.static(join(browserDistFolder, 'browser')));
-  server.get('*.*', express.static(browserDistFolder, {
-    maxAge: '1y'
-  }));
+  //server.use(express.static(browserDistFolder));
+  server.get(
+    '*.*',
+    express.static(browserDistFolder, {
+      maxAge: '1y',
+    })
+  );
+  // Ignorar rutas especiales que no deben pasar por SSR
+  server.get('/.well-known/*', (req, res) => {
+    console.log('Ignorando ruta especial:', req.url);
+    res.status(404).send('Not found');
+  });
 
   // All regular routes use the Angular engine
   server.get('*', (req, res, next) => {
@@ -39,12 +53,14 @@ export function app(): express.Express {
     console.log('Proxying request to backend:', req.url);
     console.log('Using indexHtml:', indexHtml);
     console.log('SSR rendering route:', originalUrl);
+    //res.status(404).send('Not found');
     commonEngine
       .render({
         bootstrap,
         documentFilePath: indexHtml,
         url: originalUrl,
         publicPath: join(browserDistFolder, 'browser'),
+        //publicPath: browserDistFolder, // Adjusted publicPath
         providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
       })
       .then((html) => res.send(html))

@@ -1,0 +1,37 @@
+<form (ngSubmit)="consultarDisponibilidad()">
+  <label>Tipo de Deporte:</label>
+  <select [(ngModel)]="fieldType" name="fieldType" (change)="onFieldTypeChange()" required>
+    <option value="">-- Selecciona --</option>
+    <option value="futbol">Fútbol 5</option>
+    <option value="padel">Pádel</option>
+    <option value="tenis">Tenis</option>
+  </select>
+
+  <div *ngIf="fieldList.length > 0">
+    <label>Cancha:</label>
+    <select [(ngModel)]="selectedFieldId" name="selectedFieldId" required>
+      <option value="">-- Selecciona una cancha --</option>
+      <option *ngFor="let field of fieldList" [value]="field.fieldId">{{ field.fieldId }}</option>
+    </select>
+  </div>
+
+  <div *ngIf="selectedFieldId">
+    <label>Fecha:</label>
+    <input type="date" [(ngModel)]="fecha" name="fecha" required />
+
+    <label>Hora Inicio:</label>
+    <input type="time" [(ngModel)]="horaInicio" name="horaInicio" (change)="onHoraInicioChange()" min="08:00" max="21:00" required />
+
+    <label>Hora Fin:</label>
+    <input type="time" [(ngModel)]="horaFin" name="horaFin" [disabled]="horaFinDisabled" min="08:30" max="21:30" required />
+
+    <div *ngIf="horaFin && !validarHoras()" class="error">
+      ⚠️ La duración debe ser entre 30 minutos y 2 horas, y la hora fin no puede ser menor que la inicial ni mayor que 21:30.
+    </div>
+
+    <button type="submit">Consultar Disponibilidad</button>
+  </div>
+
+  <div *ngIf="disponibilidad === true" class="disponible">✅ Horario disponible</div>
+  <div *ngIf="disponibilidad === false" class="no-disponible">⚠️ Ya existe una reserva en ese horario</div>
+</form>

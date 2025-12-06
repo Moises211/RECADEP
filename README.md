@@ -39,8 +39,8 @@ Puedes ejecutarlo fácilmente usando Docker o de forma local.
 ### 1. Clona el repositorio
 
 ```bash
-git clone https://github.com/tu-usuario/tu-repo.git
-cd tu-repo
+git clone https://github.com/tu-usuario/RECADEP.git
+cd RECADEP
 ```
 
 ### 2. Construye y levanta los contenedores

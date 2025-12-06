@@ -1,0 +1,23 @@
+<div>
+  <h3>Consulta de Disponibilidad</h3>
+
+  <label>Cancha ID:</label>
+  <input type="number" [(ngModel)]="fieldId" />
+
+  <label>Fecha (YYYY-MM-DD):</label>
+  <input type="text" [(ngModel)]="reservationDate" />
+
+  <label>Hora Inicio (HH:mm):</label>
+  <input type="text" [(ngModel)]="startTime" />
+
+  <label>Hora Fin (HH:mm):</label>
+  <input type="text" [(ngModel)]="endTime" />
+
+  <button (click)="checkAvailability()">Consultar</button>
+
+  <div *ngIf="available !== null">
+    <p *ngIf="available">✅ Horario disponible</p>
+    <p *ngIf="!available">❌ Horario ocupado</p>
+  </div>
+</div>
+
